@@ -115,15 +115,33 @@ git config core.hooksPath .githooks
 > **私有仓库的 secret scanning 与 push protection 需要 GitHub Advanced Security（Pro 不含，Team 约 $49/人/月）。**
 > 本地钩子其实更早——密钥**根本没离开本机**，而不是推上去之后才告警。
 
-## 9. 本仓库的 GitHub 计划限制（已知且已补偿）
+## 9. 分支保护与单人开发
 
-免费个人计划的**私有**仓库不支持以下功能，均已用等效手段补偿：
+`main` 已配置分支保护，实测生效：
 
-| GitHub 功能 | 状态 | 补偿手段 |
+| 设置 | 值 | 作用 |
 |---|---|---|
-| 分支保护 / rulesets | ❌ 需 GitHub Pro | **待升级**（§15 红线，见 docs/01 §14 技术债） |
-| secret scanning / push protection | ❌ 需 GHAS | ✅ CI 里的 gitleaks + **本地 pre-push 钩子** |
-| CodeQL / code scanning | ❌ 需 GHAS | ✅ CI 里的 Semgrep；`codeql.yml` 带守卫，**仓库转 public 后自动生效** |
-| Dependabot 告警与安全更新 | ✅ 免费 | 已启用 |
+| 必须走 PR | ✅ | **推不进 main**，包括管理员 |
+| 必需状态检查 | 3 项，strict | Verify / Secret scan / SAST 全绿才可合并 |
+| 管理员同受约束 | ✅ `enforce_admins` | 没有给自己开的例外 |
+| 线性历史 | ✅ | 禁止 merge commit |
+| 禁止强推 / 禁止删除 | ✅ | |
+| **必需批准数** | **0** | 见下 |
 
-**仓库转为 public 后**，上表除分支保护外全部免费自动可用。
+### 为什么批准数是 0
+
+GitHub 不允许自己批准自己的 PR。单人项目下把批准数设为 1，等于**没有任何 PR 可以合并**。
+
+因此"**不依赖作者诚实**"这条约束在这里由**自动化**承担：不能直接推 main，
+必须开 PR，且 6 项检查（Verify / Secret scan / SAST / CodeQL / dependency-review / Analyze）全绿。
+自动化不会因为作者今天累了或赶时间就放行——它比一个不存在的审批人更接近这条约束的本意。
+
+**如果将来有真实的第二位维护者**，应把批准数调回 1。**不要用同一个人的第二个账号充当审批人**——
+那是纸面合规，会让人误以为存在独立复审。
+
+### 历史：为什么仓库是 public
+
+免费个人计划的**私有**仓库不支持分支保护、rulesets、secret scanning 与 code scanning（API 实测 403）。
+转 public 后全部免费可用。代价是发布前必须完成文档脱敏与历史清理——已完成。
+
+`codeql.yml` 带可见性守卫：private 时跳过，public 时自动生效。
