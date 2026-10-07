@@ -2,7 +2,7 @@
 
 一套**可验证**的空投领取系统：X 身份确认 + SIWE 钱包签名 + 链上真实发放。
 
-[![CI](https://github.com/guangweipro/airdrop-claim/actions/workflows/ci.yml/badge.svg)](https://github.com/guangweipro/airdrop-claim/actions/workflows/ci.yml)
+[![CI](https://github.com/weinotes/airdrop-claim/actions/workflows/ci.yml/badge.svg)](https://github.com/weinotes/airdrop-claim/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
 > **这是一个模板，不是产品。** 预期用法是 fork 走改成你自己的——见 [SUPPORT.md](SUPPORT.md)。
