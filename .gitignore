@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+.next/
+.open-next/
+out/
+dist/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Test / coverage
+coverage/
+.vitest/
+
+# Solidity
+artifacts/
+cache/
+typechain-types/
+
+# Secrets — never commit any of these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.keystore
+**/keystore/
+**/keypairs/
+**/wallets/
+*keypair*.json
+*keystore*.json
+
+# Local database volume
+.docker-data/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Logs
+*.log
+logs/

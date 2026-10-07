@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Copyright 2026 Davey <wgwcko@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+#
+# Blocks a push that would introduce a secret.
+#
+# Why a local hook rather than GitHub push protection: push protection is not
+# available on private repositories without GitHub Advanced Security, which the
+# personal Pro plan does not include. A pre-push hook is strictly earlier in the
+# chain than server-side push protection — it refuses before the object ever
+# leaves the machine, so the secret never enters the remote history at all.
+#
+# Enable once per clone:  git config core.hooksPath .githooks
+
+set -euo pipefail
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-push: gitleaks is not installed — skipping secret scan." >&2
+  echo "pre-push: install it (brew install gitleaks) to enable this guard." >&2
+  exit 0
+fi
+
+zero="0000000000000000000000000000000000000000"
+status=0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Deleting a branch: nothing to scan.
+  [ "$local_sha" = "$zero" ] && continue
+
+  if [ "$remote_sha" = "$zero" ]; then
+    # New remote branch: scan everything reachable from the pushed commit.
+    range="$local_sha"
+  else
+    range="${remote_sha}..${local_sha}"
+  fi
+
+  echo "pre-push: scanning ${range} for secrets..."
+  if ! gitleaks detect \
+      --config .gitleaks.toml \
+      --redact \
+      --no-banner \
+      --log-opts="--all ${range}"; then
+    status=1
+  fi
+done
+
+if [ "$status" -ne 0 ]; then
+  cat >&2 <<'EOF'
+
+pre-push: BLOCKED — a secret was found in the commits you are about to push.
+
+Removing the file in a later commit is NOT enough: the secret stays in history
+and is recoverable. Do this instead:
+
+  1. Rotate the secret first. It must be treated as compromised the moment it
+     was written, whether or not the push succeeded.
+  2. Then rewrite the offending commits (git rebase -i / git filter-repo).
+  3. Re-run this push.
+
+Rotating before rewriting is the correct order — a rewritten history does not
+un-leak a key that was already pushed.
+EOF
+fi
+
+exit "$status"

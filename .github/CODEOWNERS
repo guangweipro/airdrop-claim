@@ -1,0 +1,10 @@
+# Default owner for everything in this repository.
+* @guangweipro
+
+# High-risk paths: the payout path signs with a funded key, and the workflow
+# files can exfiltrate secrets. Both deserve a deliberate review.
+/apps/web/scripts/        @guangweipro
+/apps/web/src/lib/        @guangweipro
+/contracts/               @guangweipro
+/.github/                 @guangweipro
+/.gitleaks.toml           @guangweipro

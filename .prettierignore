@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.open-next/
+coverage/
+artifacts/
+cache/
+typechain-types/
+pnpm-lock.yaml
+LICENSE
+
+# Prose is hand-formatted: Prettier's markdown table reflowing adds churn to
+# documents that humans edit, without improving them.
+*.md
+docs/

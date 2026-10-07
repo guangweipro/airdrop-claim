@@ -1,0 +1,23 @@
+# Local development dependencies ONLY.
+#
+# Production uses a managed Postgres (see docs/ADR/0002-托管与部署方案.md); the
+# application itself is never containerised. This file exists so integration
+# tests and local development can run against a throwaway database.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: airdrop-claim-postgres
+    environment:
+      POSTGRES_USER: airdrop
+      POSTGRES_PASSWORD: airdrop
+      POSTGRES_DB: airdrop
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker-data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U airdrop -d airdrop"]
+      interval: 5s
+      timeout: 5s
+      retries: 10

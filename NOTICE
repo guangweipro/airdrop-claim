@@ -1,0 +1,51 @@
+airdrop-claim
+Copyright 2026 Davey <wgwcko@gmail.com>
+
+This product includes software developed by third parties.
+
+--------------------------------------------------------------------------
+Third-party components
+--------------------------------------------------------------------------
+
+OpenZeppelin Contracts
+  License: MIT
+  https://github.com/OpenZeppelin/openzeppelin-contracts
+
+wagmi / viem
+  License: MIT
+  https://github.com/wevm/wagmi
+  https://github.com/wevm/viem
+
+siwe (Sign-In with Ethereum)
+  License: Apache-2.0
+  https://github.com/spruceid/siwe
+
+Next.js / React
+  License: MIT
+  https://github.com/vercel/next.js
+
+Prisma
+  License: Apache-2.0
+  https://github.com/prisma/prisma
+
+zod
+  License: MIT
+  https://github.com/colinhacks/zod
+
+jose
+  License: MIT
+  https://github.com/panva/jose
+
+Hardhat
+  License: MIT
+  https://github.com/NomicFoundation/hardhat
+
+@opennextjs/cloudflare
+  License: MIT
+  https://github.com/opennextjs/opennextjs-cloudflare
+
+--------------------------------------------------------------------------
+Full license texts for the above are available from the respective
+projects. This NOTICE file is provided for attribution purposes under
+Section 4(d) of the Apache License, Version 2.0.
+--------------------------------------------------------------------------

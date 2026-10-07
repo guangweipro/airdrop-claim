@@ -1,0 +1,23 @@
+name: Feature Request
+description: 提出功能建议
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的问题
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 建议方案
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 备选方案
+  - type: textarea
+    id: impact
+    attributes:
+      label: 影响范围与风险

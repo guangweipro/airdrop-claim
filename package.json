@@ -1,0 +1,23 @@
+{
+  "name": "airdrop-claim",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A verifiable airdrop claim system: X identity + SIWE wallet proof + on-chain payout.",
+  "license": "Apache-2.0",
+  "author": "Davey <wgwcko@gmail.com>",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "build": "pnpm -r --if-present run build"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.0"
+  }
+}

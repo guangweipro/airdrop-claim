@@ -1,0 +1,46 @@
+packages:
+  - "apps/*"
+  - "contracts"
+
+# Transitive dependencies pinned to patched versions.
+#
+# Every entry is scoped to a single major on purpose: forcing a major bump on a
+# transitive package can break its consumer silently, which is worse than the
+# advisory. Version ranges match the affected range reported by the advisory.
+overrides:
+  # GHSA-3h5v-q93c-6h6q / GHSA-96hv-2xvq-fx4p / GHSA-58qx-3vcg-4xpx (DoS, memory disclosure)
+  "ws@8": "8.21.0"
+  # GHSA-93q8-gq69-wqmw (ReDoS)
+  "ansi-regex@5": "5.0.1"
+  # GHSA-3f6p-5ww8-9rcr / GHSA-rgwj-5xj2-c3m3 (auth downgrade, unbounded inflate).
+  # Reaches us only through the Prisma CLI, which is a devDependency and is
+  # never part of the deployed bundle — pinned anyway so the alert stays clear.
+  "mysql2@3": "3.23.1"
+
+# Native build scripts are denied by default and must be approved explicitly.
+# Approve only what the project actually needs; keep the allowlist minimal
+# because a postinstall script runs with full user privileges.
+allowBuilds:
+  # Prisma query engine + CLI — required to generate the client.
+  "@prisma/engines": true
+  prisma: true
+  # Bundler used by vitest and tsx.
+  esbuild: true
+  # secp256k1 primitives used by viem for EVM signing/verification.
+  keccak: true
+  bufferutil: true
+  utf-8-validate: true
+  # WalletConnect UI toolkit — not needed; no postinstall we depend on.
+  "@reown/appkit": false
+
+minimumReleaseAgeExclude:
+  - "@next/env@16.4.0"
+  - "@next/swc-darwin-arm64@16.4.0"
+  - "@next/swc-darwin-x64@16.4.0"
+  - "@next/swc-linux-arm64-gnu@16.4.0"
+  - "@next/swc-linux-arm64-musl@16.4.0"
+  - "@next/swc-linux-x64-gnu@16.4.0"
+  - "@next/swc-linux-x64-musl@16.4.0"
+  - "@next/swc-win32-arm64-msvc@16.4.0"
+  - "@next/swc-win32-x64-msvc@16.4.0"
+  - next@16.4.0
