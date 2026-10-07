@@ -2,7 +2,7 @@
 
 ## Model
 
-Benevolent dictator. **@guangweipro** is the sole maintainer and has final say on
+Benevolent dictator. **@weinotes** is the sole maintainer and has final say on
 every change.
 
 ## Decision making
