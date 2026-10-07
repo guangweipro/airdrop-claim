@@ -1,5 +1,7 @@
 version: 2
 updates:
+  # The workflow files themselves. Pinned to full commit SHAs, so keeping them
+  # current matters — a stale pin is a stale dependency.
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -12,38 +14,26 @@ updates:
       github-actions:
         patterns: ["*"]
 
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
-    groups:
-      python:
-        patterns: ["*"]
-
+  # pnpm workspace: the root manifest and apps/web both resolve through the
+  # single root lockfile.
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: "03:00"
+      timezone: Asia/Shanghai
     open-pull-requests-limit: 5
     groups:
-      npm:
+      # Minor and patch updates are grouped: they are low-risk and would
+      # otherwise open a stream of single-dependency PRs. Major updates are
+      # deliberately left ungrouped so each one gets read on its own.
+      npm-minor-patch:
         patterns: ["*"]
-
-  - package-ecosystem: gomod
-    directory: /
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
-    groups:
-      go:
-        patterns: ["*"]
-
-  - package-ecosystem: composer
-    directory: /
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
-    groups:
-      composer:
-        patterns: ["*"]
+        update-types: ["minor", "patch"]
+    ignore:
+      # Pinned deliberately in pnpm-workspace.yaml overrides to a patched
+      # version within the same major. A Dependabot bump here would fight the
+      # override.
+      - dependency-name: "ws"
+        versions: ["8.x"]
